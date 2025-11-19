@@ -47,6 +47,50 @@ public partial class Form1 : Form
 
         leftPanel.Controls.Add(lstContacts);
 
+        // --- Search Panel ---
+        var searchPanel = new FlowLayoutPanel()
+        {
+            FlowDirection = FlowDirection.LeftToRight,
+            Dock = DockStyle.Top,
+            AutoSize = true
+        };
+
+        var txtSearch = new TextBox()
+        {
+            Width = 200,
+            Font = new Font("Segoe UI", 10)
+        };
+
+        var btnSearch = new Button()
+        {
+            Text = "Search",
+            Width = 140,
+            Height = 40,
+            Font = new Font("Segoe UI", 10),
+            TextAlign = ContentAlignment.MiddleCenter
+        };
+
+        btnSearch.Click += (s, e) =>
+        {
+            var searchValue = txtSearch.Text.Trim().ToLower();
+
+            lstContacts.Items.Clear();
+
+            foreach (var c in _repository.GetAll()
+                .Where(c => 
+                    c.Name.ToLower().Contains(searchValue) ||
+                    c.Company.ToLower().Contains(searchValue)))
+            {
+                lstContacts.Items.Add(c);
+            }
+
+            lstContacts.DisplayMember = "Name";
+        };
+
+        rightPanel.Controls.Add(searchPanel);
+        searchPanel.Controls.Add(txtSearch);
+        searchPanel.Controls.Add(btnSearch);
+
         // --- Table Layout for fields ---
         var layout = new TableLayoutPanel()
         {
@@ -160,6 +204,13 @@ public partial class Form1 : Form
 
     private void btnAdd_Click(object sender, EventArgs e)
     {
+        var error = ValidateContactInput();
+        if (error != "")
+        {
+            MessageBox.Show(error, "Eingabefehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+
         var c = new Contact
         {
             Name = txtName.Text,
@@ -171,11 +222,23 @@ public partial class Form1 : Form
 
         _repository.Add(c);
         LoadContacts();
+        MessageBox.Show("Kontakt erfolgreich hinzugefügt.", "Erfolg");
     }
 
     private void btnUpdate_Click(object sender, EventArgs e)
     {
-        if (lstContacts.SelectedItem is not Contact c) return;
+        if (lstContacts.SelectedItem is not Contact c)
+        {
+            MessageBox.Show("Bitte zuerst einen Kontakt auswählen.", "Hinweis");
+            return;
+        }
+
+        var error = ValidateContactInput();
+        if (error != "")
+        {
+            MessageBox.Show(error, "Eingabefehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
 
         c.Name = txtName.Text;
         c.Company = txtCompany.Text;
@@ -185,13 +248,47 @@ public partial class Form1 : Form
 
         _repository.Update(c);
         LoadContacts();
+        MessageBox.Show("Kontakt erfolgreich aktualisiert.", "Erfolg");
     }
 
     private void btnDelete_Click(object sender, EventArgs e)
     {
-        if (lstContacts.SelectedItem is not Contact c) return;
+        if (lstContacts.SelectedItem is not Contact c)
+        {
+            MessageBox.Show("Bitte zuerst einen Kontakt auswählen.", "Hinweis");
+            return;
+        }
 
-        _repository.Delete(c.Id);
-        LoadContacts();
+        var confirmed = MessageBox.Show(
+            "Wirklich löschen?", 
+            "Bestätigung",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Warning);
+
+        if (confirmed == DialogResult.Yes)
+        {
+            _repository.Delete(c.Id);
+            LoadContacts();
+        }
     }
+
+
+    private string ValidateContactInput()
+    {
+        if (string.IsNullOrWhiteSpace(txtName.Text))
+            return "Name darf nicht leer sein.";
+
+        if (string.IsNullOrWhiteSpace(txtPhone.Text))
+            return "Phone darf nicht leer sein.";
+
+        // Simple email validation
+        if (string.IsNullOrWhiteSpace(txtEmail.Text) ||
+            !txtEmail.Text.Contains("@") ||
+            !txtEmail.Text.Contains(".") ||
+            txtEmail.Text.Contains(" "))
+            return "Bitte gültige Email eingeben.";
+
+        return ""; // OK
+    }
+
 }
