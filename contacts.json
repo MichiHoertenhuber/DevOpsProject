@@ -1,0 +1,10 @@
+[
+  {
+    "Id": "713ddea9-cc92-4a96-91b9-1ee59298e81e",
+    "Name": "Max Mustermann",
+    "Company": "Example GmbH",
+    "Phone": "0123456789",
+    "Email": "max@example.com",
+    "Address": "Musterstra\u00DFe 1, 1234 Musterstadt"
+  }
+]
