@@ -13,3 +13,18 @@ C:\Users\mhoer\OneDrive\6.0 Master-Studium RSE\6.3 3.Semester\DevOps\Teil 1\Proj
 C:\Users\mhoer\OneDrive\6.0 Master-Studium RSE\6.3 3.Semester\DevOps\Teil 1\Projekt\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.pdb
 C:\Users\mhoer\OneDrive\6.0 Master-Studium RSE\6.3 3.Semester\DevOps\Teil 1\Projekt\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.genruntimeconfig.cache
 C:\Users\mhoer\OneDrive\6.0 Master-Studium RSE\6.3 3.Semester\DevOps\Teil 1\Projekt\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ref\ContactManager.App.dll
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\bin\Debug\net8.0\ContactManager.App.exe
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\bin\Debug\net8.0\ContactManager.App.deps.json
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\bin\Debug\net8.0\ContactManager.App.runtimeconfig.json
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\bin\Debug\net8.0\ContactManager.App.dll
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\bin\Debug\net8.0\ContactManager.App.pdb
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.AssemblyInfoInputs.cache
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.AssemblyInfo.cs
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.csproj.CoreCompileInputs.cache
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.sourcelink.json
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.dll
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\refint\ContactManager.App.dll
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.pdb
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ContactManager.App.genruntimeconfig.cache
+C:\Users\phwei\OneDrive - FH OOe (1)\Master\Semester 3\Softwareentwicklung 3 - DevOps\Teil1\Repo\DevOpsProject\src\ContactManager.App\obj\Debug\net8.0\ref\ContactManager.App.dll

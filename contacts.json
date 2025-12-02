@@ -14,5 +14,13 @@
     "Phone": "069918228745",
     "Email": "m.hoertenhuber2000@gmail.com",
     "Address": "Gm\u00F6serstra\u00DFe 13"
+  },
+  {
+    "Id": "815cce16-9d16-4b48-8cdb-a66c704f725a",
+    "Name": "Philipp Weismann",
+    "Company": "Trumpf",
+    "Phone": "06501234567",
+    "Email": "philipp@trumpf.com",
+    "Address": "Musterstra\u00DFe 1, 1234 Musterstadt"
   }
 ]

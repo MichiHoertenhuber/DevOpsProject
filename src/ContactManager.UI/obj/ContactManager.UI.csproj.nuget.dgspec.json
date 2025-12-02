@@ -1,25 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.UI\\ContactManager.UI.csproj": {}
+    "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.UI\\ContactManager.UI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj": {
+    "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj",
+        "projectUniqueName": "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj",
         "projectName": "ContactManager.App",
-        "projectPath": "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj",
-        "packagesPath": "C:\\Users\\mhoer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.App\\obj\\",
+        "projectPath": "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj",
+        "packagesPath": "C:\\Users\\phwei\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.App\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\mhoer\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\phwei\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\phwei\\OneDrive - FH OOe\\Semester 4\\Softwareengineering\\Teil 2\\Übung\\UnitTestBsp\\nuget": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -62,30 +69,37 @@
         }
       }
     },
-    "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.UI\\ContactManager.UI.csproj": {
+    "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.UI\\ContactManager.UI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.UI\\ContactManager.UI.csproj",
+        "projectUniqueName": "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.UI\\ContactManager.UI.csproj",
         "projectName": "ContactManager.UI",
-        "projectPath": "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.UI\\ContactManager.UI.csproj",
-        "packagesPath": "C:\\Users\\mhoer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.UI\\obj\\",
+        "projectPath": "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.UI\\ContactManager.UI.csproj",
+        "packagesPath": "C:\\Users\\phwei\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.UI\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\mhoer\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\phwei\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\phwei\\OneDrive - FH OOe\\Semester 4\\Softwareengineering\\Teil 2\\Übung\\UnitTestBsp\\nuget": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj": {
-                "projectPath": "C:\\Users\\mhoer\\OneDrive\\6.0 Master-Studium RSE\\6.3 3.Semester\\DevOps\\Teil 1\\Projekt\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj"
+              "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj": {
+                "projectPath": "C:\\Users\\phwei\\OneDrive - FH OOe (1)\\Master\\Semester 3\\Softwareentwicklung 3 - DevOps\\Teil1\\Repo\\DevOpsProject\\src\\ContactManager.App\\ContactManager.App.csproj"
               }
             }
           }
