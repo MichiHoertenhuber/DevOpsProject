@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ContactManager.App")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d118aba7d2df597b55abd05de076e4465da5cda")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+586902b4f473da81824daa766f4d5e55f527854c")]
 [assembly: System.Reflection.AssemblyProductAttribute("ContactManager.App")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ContactManager.App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
