@@ -8,6 +8,14 @@
     "Address": "Musterstra\u00DFe 1, 1234 Musterstadt"
   },
   {
+    "Id": "713ddea9-cc92-4a96-91b9-1ee59298e81a",
+    "Name": "Martina Musterfrau",
+    "Company": "Example GmbH",
+    "Phone": "0123456789",
+    "Email": "martina@example.com",
+    "Address": "Musterstra\u00DFe 1, 1234 Musterstadt"
+  },
+  {
     "Id": "c6295b4e-39fc-42c7-89e5-efd119d4eea2",
     "Name": "Michael H\u00F6rtenhuber",
     "Company": "Miba",
