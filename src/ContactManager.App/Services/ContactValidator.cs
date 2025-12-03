@@ -14,7 +14,7 @@ public static class ContactValidator
             return "Phone darf nicht leer sein.";
 
         if (!IsValidEmail(contact.Email))
-            return "Ungültige Email-Adresse!";
+            return "Ungültige Email-Adresse.";
 
         return ""; // OK
     }
