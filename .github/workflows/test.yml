@@ -32,29 +32,32 @@ jobs:
             --configuration Release `
             --logger "trx;LogFileName=TestResults.trx"
 
-      # -------------------------------
-      # Generate HTML test report
-      # -------------------------------
-      - name: Install trx2html
-        run: npm install -g trx2html
+      # -------------------------------------------------
+      # Install ReportGenerator (works!)
+      # -------------------------------------------------
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
-      - name: Convert TRX to HTML
-        run: trx2html **/TestResults.trx -o TestReport.html
+      # -------------------------------------------------
+      # Convert TRX → HTML test report
+      # -------------------------------------------------
+      - name: Generate HTML test report
+        run: reportgenerator -reports:**/TestResults.trx -targetdir:TestReport -reporttypes:Html
 
-      # -------------------------------
-      # Convert HTML → PDF
-      # -------------------------------
+      # -------------------------------------------------
+      # Convert HTML → PDF (wkhtmltopdf is preinstalled)
+      # -------------------------------------------------
       - name: Convert HTML to PDF
-        run: wkhtmltopdf TestReport.html TestReport.pdf
+        run: wkhtmltopdf TestReport/index.html TestReport.pdf
 
-      # -------------------------------
-      # Upload PDF + HTML
-      # -------------------------------
-      - name: Upload Reports
+      # -------------------------------------------------
+      # Upload results
+      # -------------------------------------------------
+      - name: Upload Test Reports
         uses: actions/upload-artifact@v4
         with:
           name: test-reports
           path: |
-            TestReport.html
+            TestReport/**
             TestReport.pdf
             **/*.trx
