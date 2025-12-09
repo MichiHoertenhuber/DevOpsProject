@@ -1,4 +1,4 @@
-name: .NET Build & Test with HTML Report
+name: .NET Tests
 
 on:
   push:
@@ -25,35 +25,36 @@ jobs:
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests (generate TRX)
+      - name: Run tests (TRX)
         run: |
           dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj `
-            --configuration Release `
             --no-build `
+            --configuration Release `
             --logger "trx;LogFileName=TestResults.trx"
 
-      - name: Install trxlog2html
-        run: dotnet tool install --global trxlog2html --version 1.0.4
+      # -------------------------------
+      # Generate HTML test report
+      # -------------------------------
+      - name: Install trx2html
+        run: npm install -g trx2html
 
-      ##############################################################
-      #      DEBUG: Find actual TRX file path                      #
-      ##############################################################
-      - name: Find TRX file
-        run: |
-          Write-Host "Searching for TRX files..."
-          Get-ChildItem -Recurse -Filter *.trx | ForEach-Object {
-              Write-Host "Found TRX file at: $($_.FullName)"
-          }
+      - name: Convert TRX to HTML
+        run: trx2html **/TestResults.trx -o TestReport.html
 
-      ##############################################################
-      #         Convert TRX → HTML (auto-detect path)              #
-      ##############################################################
-      - name: Convert TRX to HTML report
-        run: |
-          $trx = Get-ChildItem -Recurse -Filter *.trx | Select-Object -First 1
-          Write-Host "Using TRX file: $($trx.FullName)"
-          trxlog2html `
-            --inputFilePath "$($trx.FullName)" `
-            --outputFilePath "TestReport.html"
+      # -------------------------------
+      # Convert HTML → PDF
+      # -------------------------------
+      - name: Convert HTML to PDF
+        run: wkhtmltopdf TestReport.html TestReport.pdf
 
-      - name: Upload HTML Test Report
+      # -------------------------------
+      # Upload PDF + HTML
+      # -------------------------------
+      - name: Upload Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            TestReport.html
+            TestReport.pdf
+            **/*.trx
