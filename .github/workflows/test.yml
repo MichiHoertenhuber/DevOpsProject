@@ -33,25 +33,24 @@ jobs:
             --logger "trx;LogFileName=TestResults.trx"
 
       #################################################
-      # Generate HTML Test Report from TRX (PRO LOOK) #
+      #  Generate professional HTML report from TRX   #
       #################################################
 
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
-      - name: Create Test Report
+      - name: Create Test Report (HTML + Summary)
         run: |
           reportgenerator `
-            -reports:**/TestResults.trx `
-            -targetdir:TestReport `
-            -reporttypes:Html;HtmlSummary
+            -reports:"**/TestResults.trx" `
+            -targetdir:"TestReport" `
+            -reporttypes:"Html;HtmlSummary"
 
-      # Optional: show report directory
       - name: List generated report files
         run: ls TestReport
 
       #################################################
-      # Upload HTML Report as Artifact
+      #         Upload HTML Test Report Artifact      #
       #################################################
 
       - name: Upload Test Report
