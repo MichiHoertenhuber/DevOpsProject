@@ -33,14 +33,14 @@ jobs:
             --logger "trx;LogFileName=TestResults.trx"
 
       #################################################
-      #       Generate Test Report (TRX → HTML)       #
+      #         Convert TRX → HTML (ReportUnit)       #
       #################################################
 
-      - name: Install trx2html
-        run: dotnet tool install -g trx2html
+      - name: Install ReportUnit
+        run: dotnet tool install -g ReportUnit
 
-      - name: Convert TRX to HTML
-        run: trx2html **/TestResults.trx -o TestReport
+      - name: Generate HTML Report
+        run: ReportUnit "**/TestResults.trx" "TestReport"
 
       #################################################
       #           Upload Test Report Artifact         #
