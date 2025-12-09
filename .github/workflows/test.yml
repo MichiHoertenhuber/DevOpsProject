@@ -11,52 +11,39 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # Checkout Repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install .NET SDK
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
-      # Restore NuGet packages
       - name: Restore dependencies
         run: dotnet restore
 
-      # Build the entire solution (including WinForms)
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
 
-      ##############################################################
-      #                   Run Unit & Integration Tests             #
-      ##############################################################
-      - name: Run tests (Create TRX output)
+      - name: Run tests (TRX Output)
         run: |
           dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj `
             --configuration Release `
             --no-build `
             --logger "trx;LogFileName=TestResults.trx"
 
-      ##############################################################
-      #                   Install TRX → HTML Converter             #
-      ##############################################################
       - name: Install trxlog2html
         run: dotnet tool install --global trxlog2html --version 1.0.4
 
       ##############################################################
-      #              Convert TRX file into HTML Test Report        #
+      # Convert TRX → HTML (correct file path!)
       ##############################################################
       - name: Convert TRX to HTML report
         run: |
           trxlog2html `
-            --inputFilePath TestResults.trx `
-            --outputFilePath TestReport.html
+            --inputFilePath "tests/ContactManager.Tests/TestResults.trx" `
+            --outputFilePath "TestReport.html"
 
-      ##############################################################
-      #               Upload HTML Test Report as Artifact          #
-      ##############################################################
       - name: Upload HTML Test Report
         uses: actions/upload-artifact@v4
         with:
