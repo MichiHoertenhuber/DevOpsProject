@@ -22,42 +22,33 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build solution
+      - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests (TRX)
+      - name: Run Tests (MTP/TRX)
         run: |
           dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj `
             --no-build `
             --configuration Release `
             --logger "trx;LogFileName=TestResults.trx"
 
-      # -------------------------------------------------
-      # Install ReportGenerator (works!)
-      # -------------------------------------------------
-      - name: Install ReportGenerator
-        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+      # -----------------------------------------------
+      # Install MTP TRX → HTML Converter
+      # -----------------------------------------------
+      - name: Install MTP TRX Report Converter
+        run: dotnet tool install -g Microsoft.TestPlatform.TrxReportConverter
 
-      # -------------------------------------------------
-      # Convert TRX → HTML test report
-      # -------------------------------------------------
-      - name: Generate HTML test report
-        run: reportgenerator -reports:**/TestResults.trx -targetdir:TestReport -reporttypes:Html
+      - name: Convert TRX to HTML
+        run: trxreportconverter -t html -o TestReport.html **/TestResults.trx
 
-      # -------------------------------------------------
-      # Convert HTML → PDF (wkhtmltopdf is preinstalled)
-      # -------------------------------------------------
       - name: Convert HTML to PDF
-        run: wkhtmltopdf TestReport/index.html TestReport.pdf
+        run: wkhtmltopdf TestReport.html TestReport.pdf
 
-      # -------------------------------------------------
-      # Upload results
-      # -------------------------------------------------
-      - name: Upload Test Reports
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: test-reports
           path: |
-            TestReport/**
+            TestReport.html
             TestReport.pdf
             **/*.trx
