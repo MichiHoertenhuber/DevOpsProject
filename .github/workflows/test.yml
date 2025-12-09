@@ -9,7 +9,6 @@ on:
 jobs:
   build-and-test:
     runs-on: windows-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,83 +18,19 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore
+      - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build
+      - name: Build solution
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run Tests
+      - name: Run tests (MTP / TRX)
         run: |
-          dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj `
-            --no-build `
-            --configuration Release `
-            --logger "trx;LogFileName=TestResults.trx"
+          dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj --no-build --configuration Release --logger "trx;LogFileName=TestResults.trx"
 
-      # ---------------------------------------------------------
-      # Create TRX → PDF converter .NET console app
-      # ---------------------------------------------------------
-      - name: Create PDF generator project
-        run: |
-          dotnet new console -o TrxToPdf
-          cd TrxToPdf
-          dotnet add package PdfSharpCore
-          dotnet add package System.Xml.ReaderWriter
-
-          echo @"
-          using System;
-          using System.IO;
-          using System.Xml;
-          using PdfSharpCore.Pdf;
-          using PdfSharpCore.Drawing;
-
-          class Program
-          {
-              static void Main(string[] args)
-              {
-                  string trxPath = args[0];
-                  string pdfPath = args[1];
-
-                  var xml = new XmlDocument();
-                  xml.Load(trxPath);
-
-                  var summary = xml.SelectSingleNode(\"//ns:ResultSummary\", 
-                      new XmlNamespaceManager(xml.NameTable) {{
-                          AddNamespace(\"ns\", \"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\");
-                      }});
-
-                  var counters = summary.SelectSingleNode(\"ns:Counters\", summary.OwnerDocument.NameTable);
-
-                  int total = int.Parse(counters.Attributes[\"total\"].Value);
-                  int passed = int.Parse(counters.Attributes[\"passed\"].Value);
-                  int failed = int.Parse(counters.Attributes[\"failed\"].Value);
-
-                  PdfDocument document = new PdfDocument();
-                  document.Info.Title = \"Test Report\";
-
-                  PdfPage page = document.AddPage();
-                  XGraphics gfx = XGraphics.FromPdfPage(page);
-                  XFont headerFont = new XFont(\"Arial\", 20, XFontStyle.Bold);
-                  XFont textFont = new XFont(\"Arial\", 12, XFontStyle.Regular);
-
-                  gfx.DrawString(\".NET Test Report\", headerFont, XBrushes.Black, new XPoint(40, 40));
-                  gfx.DrawString($\"Total tests: {total}\", textFont, XBrushes.Black, new XPoint(40, 80));
-                  gfx.DrawString($\"Passed: {passed}\", textFont, XBrushes.Green, new XPoint(40, 100));
-                  gfx.DrawString($\"Failed: {failed}\", textFont, XBrushes.Red, new XPoint(40, 120));
-
-                  document.Save(pdfPath);
-              }
-          }
-          "@ > Program.cs
-
-      - name: Build converter
-        run: dotnet build TrxToPdf -c Release
-
-      - name: Convert TRX to PDF
-        run: dotnet TrxToPdf/bin/Release/net8.0/TrxToPdf.dll TestResults.trx TestReport.pdf
-
-      - name: Upload PDF
+      - name: Upload TRX test results
         uses: actions/upload-artifact@v4
         with:
-          name: test-report-pdf
-          path: TestReport.pdf
+          name: test-results
+          path: |
+            **/*.trx
