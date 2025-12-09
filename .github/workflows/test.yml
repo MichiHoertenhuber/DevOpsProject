@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-test:
     runs-on: windows-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,13 +25,37 @@ jobs:
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests (MTP / TRX)
+      - name: Run tests (TRX Output)
         run: |
-          dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj --no-build --configuration Release --logger "trx;LogFileName=TestResults.trx"
+          dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj `
+            --no-build `
+            --configuration Release `
+            --logger "trx;LogFileName=TestResults.trx"
 
-      - name: Upload TRX test results
+      #################################################
+      # Generate HTML Test Report from TRX (PRO LOOK) #
+      #################################################
+
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Create Test Report
+        run: |
+          reportgenerator `
+            -reports:**/TestResults.trx `
+            -targetdir:TestReport `
+            -reporttypes:Html;HtmlSummary
+
+      # Optional: show report directory
+      - name: List generated report files
+        run: ls TestReport
+
+      #################################################
+      # Upload HTML Report as Artifact
+      #################################################
+
+      - name: Upload Test Report
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
-          path: |
-            **/*.trx
+          name: test-report
+          path: TestReport
