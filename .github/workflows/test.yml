@@ -1,4 +1,4 @@
-name: .NET Tests
+name: .NET Build & Test with HTML Report
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest   # Linux Runner für TRX/JUnit Reporting
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
@@ -22,46 +22,39 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      ###########################################################
-      # Build ONLY the testable project (UI is Windows-only!)
-      ###########################################################
-      - name: Build test project only
-        run: dotnet build tests/ContactManager.Tests/ContactManager.Tests.csproj --configuration Release
+      - name: Build solution
+        run: dotnet build --no-restore --configuration Release
 
-      ###########################################################
-      # Run Tests → TRX Output
-      ###########################################################
-      - name: Run tests (TRX Output)
+      #################################################
+      #          Run tests → TRX file output          #
+      #################################################
+      - name: Run tests
         run: |
-          dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj \
-            --no-build \
-            --configuration Release \
+          dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj `
+            --no-build `
+            --configuration Release `
             --logger "trx;LogFileName=TestResults.trx"
 
-      ###########################################################
-      # Convert TRX → JUnit (universal format)
-      ###########################################################
-      - name: Install trx2junit
-        run: dotnet tool install -g trx2junit
+      #################################################
+      #      Install TRX → HTML converter tool        #
+      #################################################
+      - name: Install trxlog2html
+        run: dotnet tool install --global trxlog2html --version 1.0.4
 
-      - name: Convert TRX to JUnit
-        run: trx2junit TestResults.trx
+      #################################################
+      # Convert TRX → HTML using trxlog2html          #
+      #################################################
+      - name: Convert TRX to HTML report
+        run: |
+          trxlog2html `
+            --input TestResults.trx `
+            --output TestReport.html
 
-      ###########################################################
-      # Upload JUnit Report as Artifact
-      ###########################################################
-      - name: Upload JUnit Report
+      #################################################
+      #   Upload HTML Test Report as GitHub Artifact  #
+      #################################################
+      - name: Upload HTML Test Report
         uses: actions/upload-artifact@v4
         with:
-          name: junit-report
-          path: TestResults.junit.xml
-
-      ###########################################################
-      # GitHub native Test Summary (pretty UI!)
-      ###########################################################
-      - name: Publish Test Results
-        uses: dorny/test-reporter@v1
-        with:
-          name: ".NET Test Report"
-          path: "TestResults.junit.xml"
-          reporter: "junit"
+          name: html-test-report
+          path: TestReport.html
