@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest   # wichtig: Linux Runner für Testreport
+    runs-on: ubuntu-latest   # Linux Runner für TRX/JUnit Reporting
 
     steps:
       - name: Checkout repository
@@ -22,36 +22,43 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build solution
-        run: dotnet build --no-restore --configuration Release
+      ###########################################################
+      # Build ONLY the testable project (UI is Windows-only!)
+      ###########################################################
+      - name: Build test project only
+        run: dotnet build tests/ContactManager.Tests/ContactManager.Tests.csproj --configuration Release
 
+      ###########################################################
+      # Run Tests → TRX Output
+      ###########################################################
       - name: Run tests (TRX Output)
-        run: dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj --logger "trx;LogFileName=TestResults.trx"
+        run: |
+          dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj \
+            --no-build \
+            --configuration Release \
+            --logger "trx;LogFileName=TestResults.trx"
 
-      #################################################
-      #        Convert TRX → JUnit (UNIVERSAL)        #
-      #################################################
-
+      ###########################################################
+      # Convert TRX → JUnit (universal format)
+      ###########################################################
       - name: Install trx2junit
         run: dotnet tool install -g trx2junit
 
       - name: Convert TRX to JUnit
         run: trx2junit TestResults.trx
 
-      #################################################
-      #        Upload JUnit report as artifact        #
-      #################################################
-
+      ###########################################################
+      # Upload JUnit Report as Artifact
+      ###########################################################
       - name: Upload JUnit Report
         uses: actions/upload-artifact@v4
         with:
           name: junit-report
           path: TestResults.junit.xml
 
-      #################################################
-      #      GitHub Test Summary (native support)     #
-      #################################################
-
+      ###########################################################
+      # GitHub native Test Summary (pretty UI!)
+      ###########################################################
       - name: Publish Test Results
         uses: dorny/test-reporter@v1
         with:
