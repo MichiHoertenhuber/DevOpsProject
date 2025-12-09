@@ -25,34 +25,61 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run Tests (TRX)
+      - name: Run Tests
         run: |
           dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj `
             --no-build `
             --configuration Release `
             --logger "trx;LogFileName=TestResults.trx"
 
-      # -------------------------------------------------
-      # Install ReportGenerator
-      # -------------------------------------------------
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
-      # -------------------------------------------------
-      # Generate HTML Report from TRX
-      # -------------------------------------------------
       - name: Generate HTML report
         run: reportgenerator -reports:**/TestResults.trx -targetdir:TestReport -reporttypes:Html
 
-      # -------------------------------------------------
-      # Convert HTML → PDF
-      # -------------------------------------------------
-      - name: Convert to PDF
-        run: wkhtmltopdf TestReport/index.html TestReport.pdf
+      # -------------------------------------------------------------
+      # Create minimal .NET console app to convert HTML → PDF
+      # -------------------------------------------------------------
+      - name: Create HTML-to-PDF converter project
+        run: |
+          dotnet new console -o HtmlToPdf
+          cd HtmlToPdf
+          dotnet add package HtmlRenderer.PdfSharp --version 1.5.1
 
-      # -------------------------------------------------
-      # Upload artifacts
-      # -------------------------------------------------
+          echo @"
+          using System;
+          using System.IO;
+          using PdfSharpCore;
+          using TheArtOfDev.HtmlRenderer.PdfSharp;
+
+          class Program
+          {
+              static void Main(string[] args)
+              {
+                  var htmlPath = args[0];
+                  var pdfPath = args[1];
+
+                  string htmlContent = File.ReadAllText(htmlPath);
+
+                  var pdf = PdfGenerator.GeneratePdf(htmlContent, PdfSharpCore.PageSize.A4);
+                  pdf.Save(pdfPath);
+              }
+          }
+          "@ > Program.cs
+
+      - name: Build converter
+        run: dotnet build HtmlToPdf -c Release
+
+      # -------------------------------------------------------------
+      # Convert HTML → PDF using our custom converter
+      # -------------------------------------------------------------
+      - name: Generate PDF
+        run: dotnet HtmlToPdf/bin/Release/net8.0/HtmlToPdf.dll TestReport/index.html TestReport.pdf
+
+      # -------------------------------------------------------------
+      # Upload Artifacts
+      # -------------------------------------------------------------
       - name: Upload Reports
         uses: actions/upload-artifact@v4
         with:
