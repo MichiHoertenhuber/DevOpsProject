@@ -25,7 +25,7 @@ jobs:
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests (TRX Output)
+      - name: Run tests (generate TRX)
         run: |
           dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj `
             --configuration Release `
@@ -36,16 +36,24 @@ jobs:
         run: dotnet tool install --global trxlog2html --version 1.0.4
 
       ##############################################################
-      # Convert TRX → HTML (correct file path!)
+      #      DEBUG: Find actual TRX file path                      #
+      ##############################################################
+      - name: Find TRX file
+        run: |
+          Write-Host "Searching for TRX files..."
+          Get-ChildItem -Recurse -Filter *.trx | ForEach-Object {
+              Write-Host "Found TRX file at: $($_.FullName)"
+          }
+
+      ##############################################################
+      #         Convert TRX → HTML (auto-detect path)              #
       ##############################################################
       - name: Convert TRX to HTML report
         run: |
+          $trx = Get-ChildItem -Recurse -Filter *.trx | Select-Object -First 1
+          Write-Host "Using TRX file: $($trx.FullName)"
           trxlog2html `
-            --inputFilePath "tests/ContactManager.Tests/TestResults.trx" `
+            --inputFilePath "$($trx.FullName)" `
             --outputFilePath "TestReport.html"
 
       - name: Upload HTML Test Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: html-test-report
-          path: TestReport.html
