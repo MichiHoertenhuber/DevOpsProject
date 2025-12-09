@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest   # wichtig: Linux Runner für Testreport
 
     steps:
       - name: Checkout repository
@@ -26,28 +26,35 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       - name: Run tests (TRX Output)
-        run: |
-          dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj `
-            --no-build `
-            --configuration Release `
-            --logger "trx;LogFileName=TestResults.trx"
+        run: dotnet test tests/ContactManager.Tests/ContactManager.Tests.csproj --logger "trx;LogFileName=TestResults.trx"
 
       #################################################
-      #         Convert TRX → HTML (ReportUnit)       #
+      #        Convert TRX → JUnit (UNIVERSAL)        #
       #################################################
 
-      - name: Install ReportUnit
-        run: dotnet tool install -g ReportUnit
+      - name: Install trx2junit
+        run: dotnet tool install -g trx2junit
 
-      - name: Generate HTML Report
-        run: ReportUnit "**/TestResults.trx" "TestReport"
+      - name: Convert TRX to JUnit
+        run: trx2junit TestResults.trx
 
       #################################################
-      #           Upload Test Report Artifact         #
+      #        Upload JUnit report as artifact        #
       #################################################
 
-      - name: Upload Test Report
+      - name: Upload JUnit Report
         uses: actions/upload-artifact@v4
         with:
-          name: test-report
-          path: TestReport
+          name: junit-report
+          path: TestResults.junit.xml
+
+      #################################################
+      #      GitHub Test Summary (native support)     #
+      #################################################
+
+      - name: Publish Test Results
+        uses: dorny/test-reporter@v1
+        with:
+          name: ".NET Test Report"
+          path: "TestResults.junit.xml"
+          reporter: "junit"
