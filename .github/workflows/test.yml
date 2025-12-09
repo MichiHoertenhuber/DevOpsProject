@@ -32,59 +32,70 @@ jobs:
             --configuration Release `
             --logger "trx;LogFileName=TestResults.trx"
 
-      - name: Install ReportGenerator
-        run: dotnet tool install -g dotnet-reportgenerator-globaltool
-
-      - name: Generate HTML report
-        run: reportgenerator -reports:**/TestResults.trx -targetdir:TestReport -reporttypes:Html
-
-      # -------------------------------------------------------------
-      # Create minimal .NET console app to convert HTML → PDF
-      # -------------------------------------------------------------
-      - name: Create HTML-to-PDF converter project
+      # ---------------------------------------------------------
+      # Create TRX → PDF converter .NET console app
+      # ---------------------------------------------------------
+      - name: Create PDF generator project
         run: |
-          dotnet new console -o HtmlToPdf
-          cd HtmlToPdf
-          dotnet add package HtmlRenderer.PdfSharp --version 1.5.1
+          dotnet new console -o TrxToPdf
+          cd TrxToPdf
+          dotnet add package PdfSharpCore
+          dotnet add package System.Xml.ReaderWriter
 
           echo @"
           using System;
           using System.IO;
-          using PdfSharpCore;
-          using TheArtOfDev.HtmlRenderer.PdfSharp;
+          using System.Xml;
+          using PdfSharpCore.Pdf;
+          using PdfSharpCore.Drawing;
 
           class Program
           {
               static void Main(string[] args)
               {
-                  var htmlPath = args[0];
-                  var pdfPath = args[1];
+                  string trxPath = args[0];
+                  string pdfPath = args[1];
 
-                  string htmlContent = File.ReadAllText(htmlPath);
+                  var xml = new XmlDocument();
+                  xml.Load(trxPath);
 
-                  var pdf = PdfGenerator.GeneratePdf(htmlContent, PdfSharpCore.PageSize.A4);
-                  pdf.Save(pdfPath);
+                  var summary = xml.SelectSingleNode(\"//ns:ResultSummary\", 
+                      new XmlNamespaceManager(xml.NameTable) {{
+                          AddNamespace(\"ns\", \"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\");
+                      }});
+
+                  var counters = summary.SelectSingleNode(\"ns:Counters\", summary.OwnerDocument.NameTable);
+
+                  int total = int.Parse(counters.Attributes[\"total\"].Value);
+                  int passed = int.Parse(counters.Attributes[\"passed\"].Value);
+                  int failed = int.Parse(counters.Attributes[\"failed\"].Value);
+
+                  PdfDocument document = new PdfDocument();
+                  document.Info.Title = \"Test Report\";
+
+                  PdfPage page = document.AddPage();
+                  XGraphics gfx = XGraphics.FromPdfPage(page);
+                  XFont headerFont = new XFont(\"Arial\", 20, XFontStyle.Bold);
+                  XFont textFont = new XFont(\"Arial\", 12, XFontStyle.Regular);
+
+                  gfx.DrawString(\".NET Test Report\", headerFont, XBrushes.Black, new XPoint(40, 40));
+                  gfx.DrawString($\"Total tests: {total}\", textFont, XBrushes.Black, new XPoint(40, 80));
+                  gfx.DrawString($\"Passed: {passed}\", textFont, XBrushes.Green, new XPoint(40, 100));
+                  gfx.DrawString($\"Failed: {failed}\", textFont, XBrushes.Red, new XPoint(40, 120));
+
+                  document.Save(pdfPath);
               }
           }
           "@ > Program.cs
 
       - name: Build converter
-        run: dotnet build HtmlToPdf -c Release
+        run: dotnet build TrxToPdf -c Release
 
-      # -------------------------------------------------------------
-      # Convert HTML → PDF using our custom converter
-      # -------------------------------------------------------------
-      - name: Generate PDF
-        run: dotnet HtmlToPdf/bin/Release/net8.0/HtmlToPdf.dll TestReport/index.html TestReport.pdf
+      - name: Convert TRX to PDF
+        run: dotnet TrxToPdf/bin/Release/net8.0/TrxToPdf.dll TestResults.trx TestReport.pdf
 
-      # -------------------------------------------------------------
-      # Upload Artifacts
-      # -------------------------------------------------------------
-      - name: Upload Reports
+      - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports
-          path: |
-            TestReport/**
-            TestReport.pdf
-            **/*.trx
+          name: test-report-pdf
+          path: TestReport.pdf
